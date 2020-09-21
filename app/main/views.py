@@ -8,6 +8,7 @@ from ..models import User, PhotoProfile
 
 @main.route('/')
 def index():
+
     return render_template('index.html')
 
 
