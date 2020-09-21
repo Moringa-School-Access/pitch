@@ -1,0 +1,11 @@
+.img-front{
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    float: left;
+    margin-right: 30px;
+}
+
+.card-content{
+    box-shadow: 1px 1px 1px 1px gray;
+}
