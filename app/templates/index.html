@@ -4,8 +4,8 @@
 {% block content %}
     <div class="container card-content" style="background: aliceblue">
         <div class="row">
-        <div class="col-md-12">
-            <h1>Welcome to pitches Website! find the latest pitch here.</h1>
+        <div class="col-md-12 text-center">
+            <h3 class="title">Welcome to pitches Website! find the latest pitch here.</h3>
         </div>
             <div class="col-md-12">
                 <div class="card-body">
@@ -24,14 +24,14 @@
                             {% if current_user.profile_pic_path %}
                             <img src="{{url_for('static',filename=current_user.profile_pic_path)}}" alt="" class="img-thumbnail img-front">
                             {% endif %}
-                            <h5>{{ current_user.username }} <span>{{pitch.date}}</span></h5>
-                            <img src="{{pitch.user_id.profile}}" alt="" class="img-thumbnail img-front">
-                            <p></p>
+                            <h5>{{ current_user.username }}</h5>
+{#                            <img src="{{url_for('static', filename='pitch.user_id.profile_pic_path')}}" alt="" class="img-thumbnail img-front">#}
                         </div>
                         <div class="body-content mt-3">
                             <h4>{{pitch.title}}</h4>
-                            <h5> {{pitch.description}}</h5>
-{#                            <p>Likes 1 | Comments 2</p>#}
+                            <h5 class="subtitle"> {{pitch.description}}</h5>
+                            <p class="date text-muted">Posted on ~ {{pitch.date.strftime('%Y-%m-%d')}}</p>
+                            <p>Likes 1 | Comments 2</p>
                             <hr>
                             <a href="{{ url_for('main.comment', id=pitch.id) }}" class="btn btn-sm btn-dark"><i class="fa fa-comment"></i> comment</a>
                                 {% if current_user.is_authenticated %}

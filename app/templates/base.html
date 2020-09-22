@@ -6,6 +6,8 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/main.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Rancho&display=swap" rel="stylesheet">
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -19,20 +21,15 @@
           <li class="nav-item active">
             <a class="nav-link" href="{{ url_for('main.index') }}">Home <span class="sr-only">(current)</span></a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
             <li class="nav-item">
             <a class="nav-link" href="{{ url_for('main.pitch') }}">Add new pitch</a>
           </li>
             </li>
-            <li class="nav-item">
-{#            <a class="nav-link" href="{{ url_for('main.comment', post_id) }}">Add comment</a>#}
-          </li>
+
         </ul>
           <ul class="nav navbar-nav navbar-right pr-3">
               {% if current_user.is_authenticated %}
-              <li><a class="pr-3 text-light" href="{{url_for('main.profile',uname=current_user.username)}}">Profile</a></li>
+              <li><a class="pr-3 text-light" href="{{url_for('main.profile',uname=current_user.username)}}">{{ current_user.username }}</a></li>
               <li><a class="text-light" href="{{url_for('auth.logout')}}">Sign out</a></li>
               {% else %}
               <li><a class="text-light" href="{{url_for('auth.login')}}">Sign in</a></li>
@@ -47,12 +44,12 @@
 <footer class="p-4 text-center">
     <div class="social-icons">
         <i class="fa fa-facebook social"></i>
-        <i class="fa fa-twitter"></i>
-        <i class="fa fa-instagram"></i>
-        <i class="fa fa-pinterest"></i>
-        <i class="fa fa-behance"></i>
+        <i class="fa fa-twitter social"></i>
+        <i class="fa fa-instagram social"></i>
+        <i class="fa fa-pinterest social"></i>
+        <i class="fa fa-behance social"></i>
     </div>
-    Copyright &copy; 2020 | Design by Alex Otieno
+    <p class="pt-2">Copyright &copy; 2020 | Design by Alex Otieno</p>
 </footer>
 </body>
 </html>

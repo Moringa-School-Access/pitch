@@ -24,3 +24,14 @@ body{
     background: black;
     color: #D3D3D3;
 }
+
+.date{
+    font-size: 18px;
+    font-style: italic;
+    margin-left: 12%;
+}
+
+.title{
+    font-family: 'Arbutus Slab', serif;
+
+}
