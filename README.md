@@ -29,3 +29,7 @@ python3 manage.py test
 
 Open the application on your browser 127.0.0.1:5000.
 
+## Technology used
+* python3.8
+* Flask
+* Bootstrap
