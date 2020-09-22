@@ -37,3 +37,10 @@ Open the application on your browser 127.0.0.1:5000.
 ## Known Bugs
 * Functionality did not work as expected
 * There is a bug in the comment section
+
+## Contact Information
+* If you have any question or contributions, please email me at alexotieno900@gmail.com
+
+## License
+* MIT License:
+* Copyright &copy; 2020 Alex Otieno
