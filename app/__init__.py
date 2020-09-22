@@ -14,8 +14,6 @@ photos = UploadSet('photos', IMAGES)
 
 
 def create_app(config_name):
-    print('name', config_name)
-    print(config_options)
     app = Flask(__name__)
 
     # Creating the app configurations
@@ -33,11 +31,11 @@ def create_app(config_name):
     configure_uploads(app, photos)
 
     # Registering the blueprint
-    from .main import main as main_blueprint
+    from app.main import main
     # from app.auth import auth
     # app.register_blueprint(auth)
-    app.register_blueprint(main_blueprint)
-    from .auth import auth as auth_blueprint
+    from app.auth import auth as auth_blueprint
+    app.register_blueprint(main)
+    app.add_url_rule('/', endpoint='main.index')
     app.register_blueprint(auth_blueprint, url_prefix='/authenticate')
-
     return app

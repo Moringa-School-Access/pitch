@@ -81,3 +81,7 @@ class Pitch(db.Model):
 
     def __repr__(self):
         return f'Pitch {self.pitch_title}'
+
+
+# class Comment(db.model):
+#     __tablename__ = 'comments'

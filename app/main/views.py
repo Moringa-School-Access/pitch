@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, abort
-from . import main
+from app.main import main
 from flask_login import login_required, current_user
-from .forms import UpdateProfile, PitchForm
-from .. import db, photos
-from ..models import User, PhotoProfile, Pitch
+from app.main.forms import UpdateProfile, PitchForm, CommentForm
+from app import db, photos
+from app.models import User, PhotoProfile, Pitch
 
 
 @main.route('/')
@@ -74,3 +74,4 @@ def pitch():
 
     title = 'New Pitch | One Minute Pitch'
     return render_template('pitch.html', title=title, pitch_form=pitch_form)
+
