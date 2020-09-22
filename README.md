@@ -15,3 +15,17 @@ This is a flask application that allows users to post one minute pitches and als
 
 ## Development Installation
 1 Cloning the repository:
+https://github.com/Alexotieno1717/pitch
+
+2 Move to the folder and install requirements
+cd pitch
+pip install -r requirements.txt
+
+3 Running the application
+python3 manage.py server
+
+4 Testing the application
+python3 manage.py test
+
+Open the application on your browser 127.0.0.1:5000.
+
