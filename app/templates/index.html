@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
     <h1>Welcome to pitches Website! find the latest pitch here.</h1>
     <div class="container">
         <div class="row">
+        <div class="col-md-12">
+{#             {{wtf.quick_form(PitchForm)}}#}
+        </div>
             <div class="col-md-12">
                 <div class="card-body card-content">
                     {% if current_user.profile_pic_path %}
@@ -32,6 +36,21 @@
                     </div>
                 </div>
             </div>
+        <div class="col-md-12">
+            <div class="container-fluid">
+                <a href="{{ url_for('main.pitch') }}">
+                    <button class="btn btn-danger">Create a pitch</button>
+                </a>
+                <br>
+                {%for pitch in pitches%}
+                    <h4>{{pitch.title}}</h4>
+                    <h5> {{pitch.description}}</h5>
+{#                    <p>{{pitch.strftime('%d/%m/%Y')}} | {{ pitch.date }}</p>#}
+                {%endfor%}
+            </div>
+        </div>
         </div>
     </div>
+
+
 {% endblock %}

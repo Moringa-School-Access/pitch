@@ -55,9 +55,29 @@ class Role(db.Model):
         return f'User {self.name}'
 
 
-# class FormInput(db.Model):
-#     __table__ = 'pitch'
-#
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String)
-#     description = db.Column(db.String)
+class Pitch(db.Model):
+    __tablename__ = 'pitches'
+
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    description = db.Column(db.String)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    writer = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    def save_pitch(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_pitch(cls, id):
+        pitches = Pitch.query.filter_by(id=id).all()
+        return pitches
+
+    @classmethod
+    def get_all_pitches(cls):
+        pitches = Pitch.query.order_by('-id').all()
+        return pitches
+
+    def __repr__(self):
+        return f'Pitch {self.pitch_title}'

@@ -1,15 +1,15 @@
 from flask import render_template, request, redirect, url_for, abort
 from . import main
-from flask_login import login_required
-from .forms import UpdateProfile
+from flask_login import login_required, current_user
+from .forms import UpdateProfile, PitchForm
 from .. import db, photos
-from ..models import User, PhotoProfile
+from ..models import User, PhotoProfile, Pitch
 
 
 @main.route('/')
 def index():
-
-    return render_template('index.html')
+    pitches = Pitch.query.all()
+    return render_template('index.html', pitches=pitches)
 
 
 @main.route('/user/<uname>')
@@ -53,3 +53,24 @@ def update_pic(uname):
         user_photo = PhotoProfile(pic_path=path, user=user)
         db.session.commit()
     return redirect(url_for('main.profile', uname=uname))
+
+
+@main.route('/pitch/new', methods=['GET', 'POST'])
+@login_required
+def pitch():
+    """
+    View pitch function that returns the pitch page and data
+    """
+    pitch_form = PitchForm()
+
+    if pitch_form.validate_on_submit():
+        title = pitch_form.title.data
+        description = pitch_form.description.data
+
+        new_pitch = Pitch(title=title, description=description)
+        new_pitch.save_pitch()
+
+        return redirect(url_for('main.index'))
+
+    title = 'New Pitch | One Minute Pitch'
+    return render_template('pitch.html', title=title, pitch_form=pitch_form)
