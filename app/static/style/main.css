@@ -9,3 +9,18 @@
 .card-content{
     box-shadow: 1px 1px 1px 1px gray;
 }
+
+body{
+    background: #D3D3D3;
+}
+
+.social{
+    border: 1px solid black;
+    padding: 10px;
+    transition: 1s;
+}
+
+.social:hover{
+    background: black;
+    color: #D3D3D3;
+}
