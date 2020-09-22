@@ -15,41 +15,71 @@
                     {% endif %}
                     <h5>Hey Welcome to pitch website</h5>
                     <h2>{{ current_user.username }}</h2>
+                     <a href="{{ url_for('main.pitch') }}">
+                        <button class="btn btn-danger">Create a pitch</button>
+                     </a>
+                    <hr class="mt-5">
+                    <div class="card-body card-content-1">
+                        {% for pitch in pitches %}
+                            <div class="content mt-4">
+                            {% if current_user.profile_pic_path %}
+                            <img src="{{url_for('static',filename=current_user.profile_pic_path)}}" alt="" class="img-thumbnail img-front">
+                            {% endif %}
+                            <h5>{{ current_user.username }} <span>{{pitch.date}}</span></h5>
+                            <p></p>
+                        </div>
+                        <div class="body-content mt-3">
+                            <h4>{{pitch.title}}</h4>
+                            <h5> {{pitch.description}}</h5>
+                            <p>Likes 1 | Comments 2</p>
+                            <hr>
+                            <a href="{{ url_for('main.comment', id=pitch.id) }}" class="btn btn-sm btn-dark"><i class="fa fa-comment"></i> comment</a>
+                                {% if current_user.is_authenticated %}
+                                {% if current_user.has_liked_post(pitch) %}
+                                    <a href="{{ url_for('main.like_action', post_id=pitch.id, action='unlike') }}" class="btn btn-sm btn-success"><i class="fa fa-thumbs-down"></i></a>
+                                {% else %}
+                                    <a href="{{ url_for('main.like_action', post_id=pitch.id, action='like') }}" class="btn btn-sm btn-success"><i class="fa fa-thumbs-up"></i></a>
+                                {% endif %}
+                                {{ pitch.likes.count() }} likes
+                                {% else %}
+                            {{ pitch.likes.count() }} likes
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="card-body card-content">
-                    <div class="content">
-                        {% if current_user.profile_pic_path %}
-                    <img src="{{url_for('static',filename=current_user.profile_pic_path)}}" alt="" class="img-thumbnail img-front">
-                    {% endif %}
-                    <h5>{{ current_user.username }} 2nd Nov 2020</h5>
-                    <p></p>
-                    </div>
-                    <div class="body-content">
-                        <h3>Hacker rank </h3>
-                        <p>I love Solving Hacker rank test they help me a lot in my coding skills</p>
-                        <p>Likes 1 | Comments 2</p>
-                        <hr>
-                        <a href="#" class="btn btn-sm btn-success"><div class="fa fa-thumbs-up"></div></a>
-                        <a href="#" class="btn btn-sm btn-dark"><div class="fa fa-comment"></div></a>
-                    </div>
-                </div>
-            </div>
-        <div class="col-md-12">
-            <div class="container-fluid">
-                <a href="{{ url_for('main.pitch') }}">
-                    <button class="btn btn-danger">Create a pitch</button>
-                </a>
-                <br>
-                {%for pitch in pitches%}
-                    <h4>{{pitch.title}}</h4>
-                    <h5> {{pitch.description}}</h5>
-                    <p>{{pitch.date}}</p>
-                    <a href="{{ url_for('main.comment', post_id=pitch.id) }}" class="btn btn-success">Add comment</a>
-                    {%endfor%}
-            </div>
-        </div>
+{#        <div class="col-md-12">#}
+{#            <div class="container-fluid">#}
+{#                <div class="row">#}
+{#                    <div class="col-md-12">#}
+{#                        {%for pitch in pitches%}#}
+{#                             {% if current_user.profile_pic_path %}#}
+{#                            <img src="{{url_for('static',filename=current_user.profile_pic_path)}}" alt="" class="img-thumbnail img-front mt-4">#}
+{#                            {% endif %}#}
+{#                        <div class="card-body">#}
+{#                            <h4>{{pitch.title}}</h4>#}
+{#                            <h5> {{pitch.description}}</h5>#}
+{#                            <p>{{pitch.date}}</p>#}
+{#                            <hr>#}
+{#                            <div class="cont-body ml-auto">#}
+{#                                <a href="{{ url_for('main.comment', id=pitch.id) }}" class="btn btn-sm btn-dark"><i class="fa fa-comment"></i> comment</a>#}
+{#                                {% if current_user.is_authenticated %}#}
+{#                                {% if current_user.has_liked_post(pitch) %}#}
+{#                                    <a href="{{ url_for('main.like_action', post_id=pitch.id, action='unlike') }}" class="btn btn-sm btn-success"><i class="fa fa-thumbs-down"></i></a>#}
+{#                                {% else %}#}
+{#                                    <a href="{{ url_for('main.like_action', post_id=pitch.id, action='like') }}" class="btn btn-sm btn-success"><i class="fa fa-thumbs-up"></i></a>#}
+{#                                {% endif %}#}
+{#                                {{ pitch.likes.count() }} likes#}
+{#                                {% else %}#}
+{#                                    {{ pitch.likes.count() }} likes#}
+{#                            </div>#}
+{#                            {% endif %}{% endfor %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
         </div>
     </div>
 

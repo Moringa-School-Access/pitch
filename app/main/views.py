@@ -3,7 +3,7 @@ from app.main import main
 from flask_login import login_required, current_user
 from app.main.forms import UpdateProfile, PitchForm, CommentForm
 from app import db, photos
-from app.models import User, PhotoProfile, Pitch, Comment, Post
+from app.models import User, PhotoProfile, Pitch, Comment
 
 
 @main.route('/')
@@ -66,6 +66,7 @@ def pitch():
     if pitch_form.validate_on_submit():
         title = pitch_form.title.data
         description = pitch_form.description.data
+        # user = pitch_form.user.data
 
         new_pitch = Pitch(title=title, description=description)
         new_pitch.save_pitch()
@@ -81,24 +82,38 @@ def pitch():
 # def comment(pitch_id):
 #     comment_form = CommentForm()
 #
-@main.route('/comment/<int:post_id>', methods=['GET', 'POST'])
+@main.route('/comment/<int:id>', methods=['GET', 'POST'])
 @login_required
-def comment(post_id):
+def comment(id):
     form = CommentForm()
-    post = Post.query.get(post_id)
+    # post = Post.query.get(post_id)
+    pitch = Pitch.query.get(id)
     user = User.query.all()
-    comments = Comment.query.filter_by(post_id=post_id).all()
+    comments = Comment.query.filter_by(pitches_id=id).all()
     if form.validate_on_submit():
         comment = form.comment.data
-        post_id = post_id
+        # post_id = post_id
         user_id = current_user._get_current_object().id
         new_comment = Comment(
             comment=comment,
-            post_id=post_id,
+            # post_id=post_id,
             user_id=user_id
         )
         new_comment.save_comment()
         new_comments = [new_comment]
         print(new_comments)
-        return redirect(url_for('.comment', post_id=post_id))
-    return render_template('comment.html', form=form, post=post, comments=comments, user=user)
+        return redirect(url_for('.comment'))
+    return render_template('comment.html', form=form, comments=comments, user=user)
+
+
+@main.route('/like/<int:post_id>/<action>')
+@login_required
+def like_action(post_id, action):
+    post = Pitch.query.filter_by(id=post_id).first_or_404()
+    if action == 'like':
+        current_user.like_post(post)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_post(post)
+        db.session.commit()
+    return redirect(request.referrer)

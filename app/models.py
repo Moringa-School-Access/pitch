@@ -16,6 +16,7 @@ class User(UserMixin, db.Model):
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
     photos = db.relationship('PhotoProfile', backref='user', lazy="dynamic")
+    liked = db.relationship('PostLike', foreign_keys='PostLike.user_id', backref='user', lazy='dynamic')
     # password_secure = db.Column(db.String(255))
 
     pass_secure = db.Column(db.String(255))
@@ -30,6 +31,29 @@ class User(UserMixin, db.Model):
 
     def verify_password(self, password):
         return check_password_hash(self.pass_secure, password)
+
+    def like_post(self, post):
+        if not self.has_liked_post(post):
+            like = PostLike(user_id=self.id, pitches_id=post.id)
+            db.session.add(like)
+
+    def unlike_post(self, pitches):
+        if self.has_liked_post(pitches):
+            PostLike.query.filter_by(
+                user_id=self.id,
+                pitches_id=pitches.id).delete()
+
+    def has_liked_post(self, pitches):
+        return PostLike.query.filter(
+            PostLike.user_id == self.id,
+            PostLike.pitches_id == pitches.id).count() > 0
+
+
+class PostLike(db.Model):
+    __tablename__ = 'post_like'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    pitches_id = db.Column(db.Integer, db.ForeignKey('pitches.id'))
 
 
 @login_manager.user_loader
@@ -62,8 +86,10 @@ class Pitch(db.Model):
     title = db.Column(db.String)
     description = db.Column(db.String)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    likes = db.relationship('PostLike', backref='post', lazy='dynamic')
 
-    writer = db.Column(db.Integer, db.ForeignKey("users.id"))
+    # writer = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     def save_pitch(self):
         db.session.add(self)
@@ -89,15 +115,15 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text())
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+    pitches_id = db.Column(db.Integer, db.ForeignKey('pitches.id'), nullable=False)
 
     def save_comment(self):
         db.session.add(self)
         db.session.commit()
 
     @classmethod
-    def get_comments(cls, post_id):
-        comments = Comment.query.filter_by(post_id=post_id).all()
+    def get_comments(cls, pitches_id):
+        comments = Comment.query.filter_by(post_id=pitches_id).all()
         return comments
 
     def delete(self):
@@ -108,22 +134,23 @@ class Comment(db.Model):
         return f'Comments: {self.comment}'
 
 
-class Post(db.Model):
-    __tablename__ = 'posts'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    user_id = db.Column(db.String, nullable=False)
-    post = db.Column(db.String, nullable=False)
-    comment = db.relationship('Comment', backref='post', lazy='dynamic')
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def save(self):
-        db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        db.session.delete(self)
-        db.session.commit()
-
-    def __repr__(self):
-        return f"Post Title: {self.title}"
+# class Post(db.Model):
+#     __tablename__ = 'posts'
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String, nullable=False)
+#     user_id = db.Column(db.String, nullable=False)
+#     post = db.Column(db.String, nullable=False)
+#     comment = db.relationship('Comment', backref='post', lazy='dynamic')
+#     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+#     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
+#
+#     def save(self):
+#         db.session.add(self)
+#         db.session.commit()
+#
+#     def delete(self):
+#         db.session.delete(self)
+#         db.session.commit()
+#
+#     def __repr__(self):
+#         return f"Post Title: {self.title}"
