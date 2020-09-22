@@ -33,3 +33,7 @@ Open the application on your browser 127.0.0.1:5000.
 * python3.8
 * Flask
 * Bootstrap
+
+## Known Bugs
+* Functionality did not work as expected
+* There is a bug in the comment section
