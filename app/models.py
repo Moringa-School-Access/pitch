@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from datetime import datetime
 from app import db
 
 
@@ -53,3 +53,11 @@ class Role(db.Model):
 
     def __repr__(self):
         return f'User {self.name}'
+
+
+# class FormInput(db.Model):
+#     __table__ = 'pitch'
+#
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String)
+#     description = db.Column(db.String)
