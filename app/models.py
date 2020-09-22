@@ -83,5 +83,47 @@ class Pitch(db.Model):
         return f'Pitch {self.pitch_title}'
 
 
-# class Comment(db.model):
-#     __tablename__ = 'comments'
+class Comment(db.Model):
+    __tablename__ = 'comments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.Text())
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+
+    def save_comment(self):
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(cls, post_id):
+        comments = Comment.query.filter_by(post_id=post_id).all()
+        return comments
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return f'Comments: {self.comment}'
+
+
+class Post(db.Model):
+    __tablename__ = 'posts'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String, nullable=False)
+    user_id = db.Column(db.String, nullable=False)
+    post = db.Column(db.String, nullable=False)
+    comment = db.relationship('Comment', backref='post', lazy='dynamic')
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def __repr__(self):
+        return f"Post Title: {self.title}"

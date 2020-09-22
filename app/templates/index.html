@@ -46,7 +46,8 @@
                     <h4>{{pitch.title}}</h4>
                     <h5> {{pitch.description}}</h5>
                     <p>{{pitch.date}}</p>
-                {%endfor%}
+                    <a href="{{ url_for('main.comment', post_id=pitch.id) }}" class="btn btn-success">Add comment</a>
+                    {%endfor%}
             </div>
         </div>
         </div>
