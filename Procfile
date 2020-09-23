@@ -1,3 +1,3 @@
-release: python3 manage.py db init
+release: python3 app.py db init
 
 web: gunicorn app:app
