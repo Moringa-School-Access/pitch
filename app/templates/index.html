@@ -31,7 +31,7 @@
                             <h4>{{pitch.title}}</h4>
                             <h5 class="subtitle"> {{pitch.description}}</h5>
                             <p class="date text-muted">Posted on ~ {{pitch.date.strftime('%Y-%m-%d')}}</p>
-                            <p>Likes 1 | Comments 2</p>
+{#                            <p>Likes 1 | Comments 2</p>#}
                             <hr>
                             <a href="{{ url_for('main.comment', id=pitch.id) }}" class="btn btn-sm btn-dark"><i class="fa fa-comment"></i> comment</a>
                                 {% if current_user.is_authenticated %}
